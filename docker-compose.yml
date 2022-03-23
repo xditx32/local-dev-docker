@@ -1,0 +1,30 @@
+version: '3.8'
+
+networks:
+  dev-app:
+
+services:
+  dev-nginx:
+    build:
+      context: ./dockerfiles
+      dockerfile: nginx.dockerfile
+    container_name: dev-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - dev-php
+    networks:
+      - dev-app
+  dev-php:
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    container_name: dev-php
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "9000:9000"
+    networks:
+      - dev-app
